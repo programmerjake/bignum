@@ -145,7 +145,7 @@ BigUnsigned BigUnsigned::parseHexByteString(string str)
                 byteNumber++;
                 size_t bytePos = byteCount - byteNumber;
                 size_t wordPos = bytePos / BytesPerWord;
-                retval.data->words[wordPos] |= ((WordType)currentByte << (8 * bytePos));
+                retval.data->words[wordPos] |= ((WordType)currentByte << (8 * (bytePos % BytesPerWord)));
                 haveByte = false;
                 currentByte = 0;
             }
@@ -156,7 +156,7 @@ BigUnsigned BigUnsigned::parseHexByteString(string str)
         byteNumber++;
         size_t bytePos = byteCount - byteNumber;
         size_t wordPos = bytePos / BytesPerWord;
-        retval.data->words[wordPos] |= ((WordType)currentByte << (8 * bytePos));
+        retval.data->words[wordPos] |= ((WordType)currentByte << (8 * (bytePos % BytesPerWord)));
         haveByte = false;
         currentByte = 0;
     }
@@ -191,13 +191,13 @@ BigUnsigned BigUnsigned::fromByteString(string str)
     unsigned currentByte = 1;
     size_t bytePos = byteCount - ++byteNumber;
     size_t wordPos = bytePos / BytesPerWord;
-    retval.data->words[wordPos] |= ((WordType)currentByte << (8 * bytePos));
+    retval.data->words[wordPos] |= ((WordType)currentByte << (8 * (bytePos % BytesPerWord)));
     for(size_t i = 0; i < str.size(); i++)
     {
         unsigned currentByte = str[i];
         size_t bytePos = byteCount - ++byteNumber;
         size_t wordPos = bytePos / BytesPerWord;
-        retval.data->words[wordPos] |= ((WordType)currentByte << (8 * bytePos));
+        retval.data->words[wordPos] |= ((WordType)currentByte << (8 * (bytePos % BytesPerWord)));
     }
     retval.normalize();
     return retval;
